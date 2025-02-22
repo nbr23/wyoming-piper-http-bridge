@@ -1,5 +1,5 @@
 from wyoming.client import AsyncTcpClient
-from wyoming.tts import Synthesize
+from wyoming.tts import Synthesize, SynthesizeVoice
 from wyoming.audio import AudioChunk
 from wyoming.info import Describe
 import wave
@@ -33,13 +33,16 @@ async def list_voices(host="localhost", port=10200):
                 break
     return voices
 
-async def get_tts(text, host="localhost", port=10200):
+async def get_tts(text, voice=None, host="localhost", port=10200):
     audio_bytes = bytes()
     format_info = {
     }
     async with WyomingClient(host, port) as w:
 
-        await w.client.write_event(Synthesize(text=text).event())
+        await w.client.write_event(Synthesize(
+            text=text,
+            voice=SynthesizeVoice(name=voice)
+            ).event())
 
         while True:
             event = await w.client.read_event()

@@ -10,4 +10,4 @@ Or to test it with wyoming-piper, use the provided docker-compose.yml and run `d
 
 ### Text to speech
 
-`curl -X POST -H "Content-Type: application/json" -d '{"text": "happy text to speaching!"}' http://localhost:8000/api/tts | mpv -`
+`curl -X POST -H "Content-Type: application/json" -d '{"text": "happy text to speaching!","voice":"en_US-danny-low"}' http://localhost:8000/api/tts | mpv -`

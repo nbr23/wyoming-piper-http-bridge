@@ -20,5 +20,6 @@ class TTSApi:
     async def api_get_tts(self, request):
         data = await request.json()
         text = data.get('text')
-        audio_bytes, format_info = await get_tts(text, self.piper_host, self.piper_port)
+        voice = data.get('voice')
+        audio_bytes, format_info = await get_tts(text, voice, self.piper_host, self.piper_port)
         return Response(audio_to_wav_bytes(audio_bytes, format_info), media_type='audio/wav')
