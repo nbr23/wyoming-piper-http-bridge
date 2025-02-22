@@ -15,6 +15,8 @@ services:
     command: "--voice en_US-lessac-medium"
     networks:
       - tts
+    volumes:
+      - ".piper:/data"
 
 networks:
   tts:
