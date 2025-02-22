@@ -33,7 +33,7 @@ async def list_voices(host="localhost", port=10200):
                 break
     return voices
 
-async def get_tts(text, voice=None, host="localhost", port=10200):
+async def get_tts(text, voice=None, language=None, speaker=None, host="localhost", port=10200):
     audio_bytes = bytes()
     format_info = {
     }
@@ -41,8 +41,11 @@ async def get_tts(text, voice=None, host="localhost", port=10200):
 
         await w.client.write_event(Synthesize(
             text=text,
-            voice=SynthesizeVoice(name=voice)
-            ).event())
+            voice=SynthesizeVoice(
+                name=voice,
+                language=language,
+                speaker=speaker
+            )).event())
 
         while True:
             event = await w.client.read_event()

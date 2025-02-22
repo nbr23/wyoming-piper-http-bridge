@@ -14,12 +14,22 @@ class TTSApi:
         ])
 
     async def api_list_voices(self, request):
-        voices = await list_voices(self.piper_host, self.piper_port)
+        language = request.query_params.get('language')
+        voices = await list_voices(host=self.piper_host, port=self.piper_port)
+        if language:
+            res = []
+            for voice in voices:
+                for lang in voice.get('languages', []):
+                    if lang == language:
+                        res.append(voice)
+            return JSONResponse(res)
         return JSONResponse(voices)
 
     async def api_get_tts(self, request):
         data = await request.json()
         text = data.get('text')
         voice = data.get('voice')
-        audio_bytes, format_info = await get_tts(text, voice, self.piper_host, self.piper_port)
+        language = data.get('language')
+        speaker = data.get('speaker')
+        audio_bytes, format_info = await get_tts(text, voice=voice, language=language, speaker=speaker, host=self.piper_host, port=self.piper_port)
         return Response(audio_to_wav_bytes(audio_bytes, format_info), media_type='audio/wav')
