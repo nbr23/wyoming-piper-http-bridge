@@ -1,0 +1,21 @@
+services:
+  tts-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PIPER_HOST=wyoming-piper
+      - PIPER_PORT=10200
+    networks:
+      - tts
+  wyoming-piper:
+    image: rhasspy/wyoming-piper:latest
+    command: "--voice en_US-lessac-medium"
+    networks:
+      - tts
+
+networks:
+  tts:
+    driver: bridge

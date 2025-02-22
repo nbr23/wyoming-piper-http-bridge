@@ -4,7 +4,7 @@ A quick and dirty bridge to reach piper through the wyoming protocol via HTTP
 
 ## Usage
 
-Run it with `uvicorn tts-api:tts_api`
+Run it with `uvicorn tts-api:main`
 
 ### Text to speech
 
