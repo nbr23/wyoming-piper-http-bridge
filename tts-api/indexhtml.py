@@ -77,7 +77,7 @@ INDEX_HTML = '''
         
         async function fetchVoices() {
             try {
-                const response = await fetch('/api/voices');
+                const response = await fetch(`${window.location.pathname}api/voices`);
                 voices = await response.json();
                 initializeForm();
             } catch (error) {
@@ -143,7 +143,7 @@ INDEX_HTML = '''
             };
 
             try {
-                const response = await fetch('/api/tts', {
+                const response = await fetch(`${window.location.pathname}api/tts`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
