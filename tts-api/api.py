@@ -31,5 +31,6 @@ class TTSApi:
         voice = data.get('voice')
         language = data.get('language')
         speaker = data.get('speaker')
+        speed = data.get('speed', 1.0)
         audio_bytes, format_info = await get_tts(text, voice=voice, language=language, speaker=speaker, host=self.piper_host, port=self.piper_port)
-        return Response(audio_to_wav_bytes(audio_bytes, format_info), media_type='audio/wav')
+        return Response(audio_to_wav_bytes(audio_bytes, format_info, speed=speed), media_type='audio/wav')

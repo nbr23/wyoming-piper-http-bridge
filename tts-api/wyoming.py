@@ -66,8 +66,11 @@ async def get_tts(text, voice=None, language=None, speaker=None, host="localhost
 
     return audio_bytes, format_info
 
-def audio_to_wav_bytes(audio_bytes, format_info):
+def audio_to_wav_bytes(audio_bytes, format_info, speed=1.0):
     wav_buffer = io.BytesIO()
+
+    if speed and speed != 1.0:
+        format_info['sample_rate'] = int(format_info['sample_rate'] * speed)
     
     with wave.open(wav_buffer, "wb") as wav_file:
         wav_file.setnchannels(format_info['channels'])
