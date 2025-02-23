@@ -11,7 +11,7 @@ class TTSApi:
         self.piper_port = piper_port
         self.app = Starlette(debug=True, routes=[
             Route('/api/voices', self.api_list_voices),
-            Route('/api/tts', self.api_get_tts, methods=['POST']),
+            Route('/api/tts', self.api_get_tts, methods=['POST', 'GET']),
             Route('/', lambda request: HTMLResponse(INDEX_HTML)),
         ])
 
@@ -28,11 +28,16 @@ class TTSApi:
         return JSONResponse(voices)
 
     async def api_get_tts(self, request):
-        data = await request.json()
+        if request.method == 'POST':
+            data = await request.json()
+        else:
+            data = request.query_params
+
         text = data.get('text')
         voice = data.get('voice')
         language = data.get('language')
         speaker = data.get('speaker')
-        speed = data.get('speed', 1.0)
+        speed = float(data.get('speed', 1.0))
+
         audio_bytes, format_info = await get_tts(text, voice=voice, language=language, speaker=speaker, host=self.piper_host, port=self.piper_port)
         return Response(audio_to_wav_bytes(audio_bytes, format_info, speed=speed), media_type='audio/wav')
