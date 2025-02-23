@@ -1,6 +1,7 @@
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse, Response
+from starlette.responses import JSONResponse, Response, HTMLResponse
 from starlette.routing import Route
+from .indexhtml import INDEX_HTML
 
 from .wyoming import list_voices, get_tts, audio_to_wav_bytes
 
@@ -10,7 +11,8 @@ class TTSApi:
         self.piper_port = piper_port
         self.app = Starlette(debug=True, routes=[
             Route('/api/voices', self.api_list_voices),
-            Route('/api/tts', self.api_get_tts, methods=['POST'])
+            Route('/api/tts', self.api_get_tts, methods=['POST']),
+            Route('/', lambda request: HTMLResponse(INDEX_HTML)),
         ])
 
     async def api_list_voices(self, request):
