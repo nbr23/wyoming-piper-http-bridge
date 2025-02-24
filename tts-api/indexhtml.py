@@ -119,7 +119,7 @@ INDEX_HTML = '''
             const voice = voices.find(v => v.name === selectedVoice);
             if (voice && voice.speakers && voice.speakers.length > 0) {
                 voice.speakers.forEach(speaker => {
-                    const option = new Option(speaker, speaker);
+                    const option = new Option(speaker.name, speaker.name);
                     speakerSelect.add(option);
                 });
                 speakerSelect.disabled = false;
