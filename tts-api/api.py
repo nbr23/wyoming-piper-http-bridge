@@ -28,10 +28,11 @@ class TTSApi:
         return JSONResponse(voices)
 
     async def api_get_tts(self, request):
+        post_data = {}
         if request.method == 'POST':
-            data = await request.json()
-        else:
-            data = request.query_params
+            post_data = await request.json()
+        get_data = request.query_params
+        data = {**get_data, **post_data}
 
         text = data.get('text')
         voice = data.get('voice')
