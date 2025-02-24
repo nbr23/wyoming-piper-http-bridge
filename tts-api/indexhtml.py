@@ -14,6 +14,8 @@ INDEX_HTML = '''
         }
         .form-group {
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
         }
         label {
             display: block;
@@ -40,29 +42,39 @@ INDEX_HTML = '''
         button:hover {
             background-color: #45a049;
         }
+        .copy-button {
+            background-color: #008CBA;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+        .copy-button:hover {
+            background-color: #007BB5;
+        }
     </style>
 </head>
 <body>
     <h1>Text-to-Speech</h1>
     <form id="ttsForm">
+        <label for="textInput">Text to speak:</label>
         <div class="form-group">
-            <label for="textInput">Text to speak:</label>
             <textarea id="textInput"></textarea>
         </div>
         
+        <label for="languageSelect">Language:</label>
         <div class="form-group">
-            <label for="languageSelect">Language:</label>
             <select id="languageSelect"></select>
         </div>
         
+        <label for="voiceSelect">Voice:</label>
         <div class="form-group">
-            <label for="voiceSelect">Voice:</label>
             <select id="voiceSelect"></select>
+            <button type="button" class="copy-button" onclick="copyVoice()">Copy</button>
         </div>
         
+        <label for="speakerSelect">Speaker:</label>
         <div class="form-group">
-            <label for="speakerSelect">Speaker:</label>
             <select id="speakerSelect"></select>
+            <button type="button" class="copy-button" onclick="copySpeaker()">Copy</button>
         </div>
         
         <button type="submit">Speak!</button>
@@ -127,6 +139,20 @@ INDEX_HTML = '''
                 speakerSelect.add(new Option('No speakers available', ''));
                 speakerSelect.disabled = true;
             }
+        }
+
+        function copyVoice() {
+            const selectedVoice = document.getElementById('voiceSelect').value;
+            navigator.clipboard.writeText(selectedVoice).catch(err => {
+                console.error('Error copying voice:', err);
+            });
+        }
+
+        function copySpeaker() {
+            const selectedSpeaker = document.getElementById('speakerSelect').value;
+            navigator.clipboard.writeText(selectedSpeaker).catch(err => {
+                console.error('Error copying speaker:', err);
+            });
         }
 
         document.getElementById('languageSelect').addEventListener('change', updateVoiceSelect);
